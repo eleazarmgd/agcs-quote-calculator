@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Quote Calculator | AG Cleaning Solutions",
+  title: "Calorie Tracker | Diet & Nutrition",
   description:
-    "Get an instant estimate for commercial cleaning services. Janitorial, Post-Construction, and Floor Care quotes in seconds.",
+    "Track your daily calories and macros. Log meals, browse common foods, and stay on top of your nutrition goals.",
 };
 
 export default function RootLayout({
