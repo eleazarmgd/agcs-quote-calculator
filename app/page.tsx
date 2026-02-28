@@ -80,6 +80,7 @@ const FOOD_DB: Food[] = [
   { id: "g8",  name: "White Bread",            category: "Grains",     calories: 133, protein: 4.5, carbs: 25,  fat: 1.8, serving: "2 slices" },
   { id: "g9",  name: "Flour Tortilla",         category: "Grains",     calories: 146, protein: 3.9, carbs: 25,  fat: 3.5, serving: "1 medium" },
   { id: "g10", name: "Granola",                category: "Grains",     calories: 597, protein: 18,  carbs: 65,  fat: 29,  serving: "1 cup" },
+  { id: "g11", name: "Sourdough Bread",        category: "Grains",     calories: 140, protein: 5.0, carbs: 26,  fat: 1.0, serving: "1 slice" },
 
   // Dairy
   { id: "d1",  name: "Whole Milk",             category: "Dairy",      calories: 149, protein: 8.0, carbs: 12,  fat: 8.0, serving: "1 cup" },
@@ -153,9 +154,9 @@ function uid() {
 }
 
 function macroColor(macro: "protein" | "carbs" | "fat") {
-  if (macro === "protein") return "#0ea5e9";
-  if (macro === "carbs")   return "#f59e0b";
-  return "#ef4444";
+  if (macro === "protein") return "#9b8db0";
+  if (macro === "carbs")   return "#c9a07a";
+  return "#c47a7a";
 }
 
 // ─── ProgressBar ────────────────────────────────────────────────────────────
@@ -163,7 +164,7 @@ function macroColor(macro: "protein" | "carbs" | "fat") {
 function ProgressBar({
   value,
   max,
-  color = "#16a34a",
+  color = "#c9768a",
   height = 10,
 }: {
   value: number;
@@ -177,7 +178,7 @@ function ProgressBar({
     <div className="w-full rounded-full overflow-hidden bg-slate-100" style={{ height }}>
       <div
         className="progress-fill rounded-full"
-        style={{ width: `${pct}%`, height, background: over ? "#ef4444" : color }}
+        style={{ width: `${pct}%`, height, background: over ? "#c47a7a" : color }}
       />
     </div>
   );
@@ -202,7 +203,7 @@ function FoodCard({ food, onAdd }: { food: Food; onAdd: (food: Food, meal: MealC
   const [servings, setServings] = useState(1);
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+    <div className="bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow" style={{ borderColor: "#eeddd8" }}>
       <button
         className="w-full text-left p-3 flex items-center justify-between gap-2"
         onClick={() => setOpen(o => !o)}
@@ -237,8 +238,8 @@ function FoodCard({ food, onAdd }: { food: Food; onAdd: (food: Food, meal: MealC
                 className="px-2.5 py-1 rounded-full text-xs font-medium border transition-colors"
                 style={
                   meal === m
-                    ? { background: "#16a34a", color: "#fff", borderColor: "#16a34a" }
-                    : { background: "transparent", color: "#64748b", borderColor: "#e2e8f0" }
+                    ? { background: "#c9768a", color: "#fff", borderColor: "#c9768a" }
+                    : { background: "transparent", color: "#9e8286", borderColor: "#e0d0cc" }
                 }
               >
                 {m}
@@ -258,7 +259,7 @@ function FoodCard({ food, onAdd }: { food: Food; onAdd: (food: Food, meal: MealC
               onClick={() => setServings(s => +(s + 0.5).toFixed(1))}
               className="w-7 h-7 rounded-full bg-slate-100 text-slate-600 font-bold flex items-center justify-center hover:bg-slate-200 transition-colors"
             >+</button>
-            <span className="text-xs font-semibold text-green-600 w-16 text-right">
+            <span className="text-xs font-semibold w-16 text-right" style={{ color: "#c9768a" }}>
               {Math.round(food.calories * servings)} kcal
             </span>
           </div>
@@ -266,7 +267,7 @@ function FoodCard({ food, onAdd }: { food: Food; onAdd: (food: Food, meal: MealC
           <button
             onClick={() => { onAdd(food, meal, servings); setOpen(false); setServings(1); }}
             className="w-full py-2 rounded-xl text-sm font-semibold text-white hover:opacity-90 transition-opacity"
-            style={{ background: "#16a34a" }}
+            style={{ background: "#c9768a" }}
           >
             Add to {meal}
           </button>
@@ -363,13 +364,13 @@ export default function CalorieTracker() {
       {/* ── Header ── */}
       <header
         className="sticky top-0 z-20 shadow-sm"
-        style={{ background: "linear-gradient(135deg, #16a34a 0%, #0ea5e9 100%)" }}
+        style={{ background: "linear-gradient(135deg, #c9768a 0%, #9b8db0 100%)" }}
       >
         <div className="px-4 pt-5 pb-3">
           {/* Title row */}
           <div className="flex items-start justify-between mb-3">
             <div>
-              <h1 className="text-xl font-extrabold text-white tracking-tight">Calorie Tracker</h1>
+              <h1 className="text-xl text-white tracking-tight" style={{ fontFamily: "var(--font-pacifico)" }}>Calorie Tracker</h1>
               <p className="text-green-100 text-xs mt-0.5">
                 {new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}
               </p>
@@ -414,7 +415,7 @@ export default function CalorieTracker() {
                 {isOver ? `+${Math.round(Math.abs(remaining)).toLocaleString()}` : Math.round(remaining).toLocaleString()}
               </span>
             </div>
-            <ProgressBar value={totals.calories} max={goal} color={isOver ? "#fca5a5" : "#bbf7d0"} height={8} />
+            <ProgressBar value={totals.calories} max={goal} color={isOver ? "#e8a0a0" : "#f5b8c8"} height={8} />
           </div>
         </div>
 
@@ -451,10 +452,13 @@ export default function CalorieTracker() {
               <input
                 ref={searchRef}
                 type="text"
-                placeholder="Search 90+ foods…"
+                placeholder="Search 91+ foods…"
                 value={search}
                 onChange={e => setSearch(e.target.value)}
-                className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-slate-200 bg-white text-sm text-slate-700 placeholder-slate-400 focus:outline-none focus:border-green-400 transition-colors"
+                className="w-full pl-9 pr-4 py-2.5 rounded-xl border bg-white text-sm text-slate-700 placeholder-slate-400 focus:outline-none transition-colors"
+                style={{ borderColor: "#e0d0cc" }}
+                onFocus={e => (e.currentTarget.style.borderColor = "#c9768a")}
+                onBlur={e => (e.currentTarget.style.borderColor = "#e0d0cc")}
               />
               {search && (
                 <button
@@ -473,8 +477,8 @@ export default function CalorieTracker() {
                   className="shrink-0 px-3 py-1 rounded-full text-xs font-medium border transition-colors whitespace-nowrap"
                   style={
                     selectedCategory === cat
-                      ? { background: "#16a34a", color: "#fff", borderColor: "#16a34a" }
-                      : { background: "#fff", color: "#64748b", borderColor: "#e2e8f0" }
+                      ? { background: "#c9768a", color: "#fff", borderColor: "#c9768a" }
+                      : { background: "#fff", color: "#9e8286", borderColor: "#e0d0cc" }
                   }
                 >
                   {cat}
@@ -510,7 +514,7 @@ export default function CalorieTracker() {
                 <button
                   onClick={() => setActiveTab("add")}
                   className="mt-5 px-6 py-2 rounded-xl text-sm font-semibold text-white"
-                  style={{ background: "#16a34a" }}
+                  style={{ background: "#c9768a" }}
                 >
                   Add Food
                 </button>
@@ -525,7 +529,7 @@ export default function CalorieTracker() {
                     <div key={meal} className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
                       <div className="flex items-center justify-between px-4 py-2.5 bg-slate-50 border-b border-slate-100">
                         <span className="text-sm font-bold text-slate-700">{meal}</span>
-                        <span className="text-xs font-semibold text-green-600">{mealCal} kcal</span>
+                        <span className="text-xs font-semibold" style={{ color: "#c9768a" }}>{mealCal} kcal</span>
                       </div>
                       <div className="px-4">
                         {entries.map(e => <LogItem key={e.id} entry={e} onRemove={removeEntry} />)}
@@ -539,7 +543,7 @@ export default function CalorieTracker() {
                   <p className="text-sm font-bold text-green-800 mb-2">Daily Totals</p>
                   <div className="flex justify-around text-center">
                     <div>
-                      <p className="text-lg font-extrabold text-green-700">{Math.round(totals.calories)}</p>
+                      <p className="text-lg font-extrabold" style={{ color: "#c9768a" }}>{Math.round(totals.calories)}</p>
                       <p className="text-[10px] text-green-600">kcal</p>
                     </div>
                     <div>
@@ -581,7 +585,7 @@ export default function CalorieTracker() {
                   <p className="text-xs text-slate-400">consumed</p>
                 </div>
                 <div className="text-right">
-                  <p className={`text-xl font-bold ${isOver ? "text-red-500" : "text-green-600"}`}>
+                  <p className={`text-xl font-bold`} style={{ color: isOver ? "#c47a7a" : "#c9768a" }}>
                     {isOver
                       ? `+${Math.round(Math.abs(remaining)).toLocaleString()}`
                       : Math.round(remaining).toLocaleString()}
@@ -589,7 +593,7 @@ export default function CalorieTracker() {
                   <p className="text-xs text-slate-400">{isOver ? "over goal" : "remaining"}</p>
                 </div>
               </div>
-              <ProgressBar value={totals.calories} max={goal} color={isOver ? "#ef4444" : "#16a34a"} height={12} />
+              <ProgressBar value={totals.calories} max={goal} color={isOver ? "#c47a7a" : "#c9768a"} height={12} />
               <p className="text-xs text-slate-400 text-right mt-1">Goal: {goal.toLocaleString()} kcal</p>
             </div>
 
@@ -633,7 +637,7 @@ export default function CalorieTracker() {
                       <span className="font-medium text-slate-600">{meal}</span>
                       <span className="text-slate-500">{Math.round(mealCal)} kcal</span>
                     </div>
-                    <ProgressBar value={mealCal} max={goal} color="#16a34a" height={6} />
+                    <ProgressBar value={mealCal} max={goal} color="#c9768a" height={6} />
                   </div>
                 );
               })}
