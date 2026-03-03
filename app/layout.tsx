@@ -15,9 +15,8 @@ const pacifico = Pacifico({
 });
 
 export const metadata: Metadata = {
-  title: "Calorie Tracker | Diet & Nutrition",
-  description:
-    "Track your daily calories and macros. Log meals, browse common foods, and stay on top of your nutrition goals.",
+  title: "AGCS Quote Calculator",
+  description: "Get a quote from AGCS.",
 };
 
 export default function RootLayout({
