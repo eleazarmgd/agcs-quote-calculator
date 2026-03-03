@@ -304,7 +304,7 @@ export default function CalorieTracker() {
   const [log, setLog] = useState<LogEntry[]>([]);
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const [activeTab, setActiveTab] = useState<"add" | "log" | "summary">("add");
+  const [activeTab, setActiveTab] = useState<"add" | "log" | "summary" | "form">("add");
   const [goal, setGoal] = useState(DEFAULT_GOAL);
   const [editingGoal, setEditingGoal] = useState(false);
   const [goalInput, setGoalInput] = useState(String(DEFAULT_GOAL));
@@ -421,7 +421,7 @@ export default function CalorieTracker() {
 
         {/* Tabs */}
         <div className="flex border-t border-white/20">
-          {(["add", "log", "summary"] as const).map(tab => (
+          {(["add", "log", "summary", "form"] as const).map(tab => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
@@ -432,7 +432,7 @@ export default function CalorieTracker() {
                   : { color: "rgba(255,255,255,0.6)", borderBottom: "2px solid transparent" }
               }
             >
-              {tab === "add" ? "Add Food" : tab === "log" ? `Log (${log.length})` : "Summary"}
+              {tab === "add" ? "Add Food" : tab === "log" ? `Log (${log.length})` : tab === "summary" ? "Summary" : "Form"}
             </button>
           ))}
         </div>
@@ -657,6 +657,19 @@ export default function CalorieTracker() {
                 <li>Eat leafy greens at every meal for micronutrients.</li>
               </ul>
             </div>
+          </div>
+        )}
+
+        {/* ── AIRTABLE FORM ── */}
+        {activeTab === "form" && (
+          <div className="fade-in" style={{ height: "calc(100vh - 200px)" }}>
+            <iframe
+              src="https://airtable.com/appIy9TfNFQmqlqqL/pagT7uyXX7inhw9Jh/form"
+              width="100%"
+              height="100%"
+              style={{ border: "none", background: "#fff" }}
+              title="Airtable Form"
+            />
           </div>
         )}
       </main>
